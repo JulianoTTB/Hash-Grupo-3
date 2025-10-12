@@ -1,15 +1,15 @@
 public class Registro {
-    private int codigo;
+    private String codigo;
 
-    public Registro(int codigo){
+    public Registro(String codigo){
         this.codigo = codigo;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 }
