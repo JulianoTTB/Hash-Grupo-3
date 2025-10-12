@@ -27,12 +27,15 @@ public class HashModular {
         int hash = hashModular(codigo);
 
         int colisoes = 0;
-        while(tabelaHash[hash].getCodigo() != codigo && tabelaHash[hash] != null){
+        while(tabelaHash[hash] != null){
+            if(tabelaHash[hash].getCodigo() == codigo) break;
             hash = reHashing(hash);
             colisoes++;
 
             if(colisoes == 5) return null;
         }
+
+        if(tabelaHash[hash] == null) return null;
         return tabelaHash[hash];
     }
 
@@ -55,7 +58,8 @@ public class HashModular {
     public boolean remover(String codigo){
         int hash = hashModular(codigo);
         int colisoes = 0;
-        while(tabelaHash[hash].getCodigo() != codigo && tabelaHash[hash] != null){
+        while(tabelaHash[hash] != null){
+            if(tabelaHash[hash].getCodigo() == codigo) break;
             hash = reHashing(hash);
             colisoes++;
 
