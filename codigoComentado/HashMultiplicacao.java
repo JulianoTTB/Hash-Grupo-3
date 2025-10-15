@@ -1,6 +1,6 @@
 public class HashMultiplicacao {
     private ListaEncadeada [] tabelaHash; // Atributo que armazenará o vetor de listas encadeadas para cada posição da tabela hash.
-    private int tamanho; // Atributo para definir o tamanho de cada lista encadeada.
+    private int tamanho;// Atributo para definir o tamanho de cada lista encadeada.
 
     public HashMultiplicacao(int tamanho) {
         this.tamanho = tamanho;
@@ -54,4 +54,41 @@ public class HashMultiplicacao {
         }
         return -1;
     }
+
+    public int [][] maioresListas() {
+        int [] indiceMaiores = {-1, -1, -1};
+        int [] maioresListas = {0, 0, 0};
+
+        // Percorre todas as posições da tabela hash e verifica qual delas possuem uma lista encadeada diferente de null para verificar o tamanho.
+        for(int i = 0; i < this.tamanho; i++) {
+            // Verifica se existe uma lista encadeada que contenha nós na posição i.
+            if(tabelaHash[i] != null) {
+                int tamanho = tabelaHash[i].getTamanho();
+
+                // Compara o tamanho da posição t
+                if(tamanho > maioresListas[0]) {
+                    maioresListas[2] = maioresListas[1];
+                    indiceMaiores[2] = indiceMaiores[1];
+
+                    maioresListas[1] = maioresListas[0];
+                    indiceMaiores[1] = indiceMaiores[0];
+
+                    maioresListas[0] = tamanho;
+                    indiceMaiores[0] = i;
+                } else if(tamanho > maioresListas[1]) {
+                    maioresListas[2] = maioresListas[1];
+                    indiceMaiores[2] = indiceMaiores[1];
+
+                    maioresListas[1] = tamanho;
+                    indiceMaiores[1] = i;
+                } else if(tamanho > maioresListas[2]) {
+                    maioresListas[2] = tamanho;
+                    indiceMaiores[2] = i;
+                }
+            }
+        }
+        // Retorna uma matriz com o primeiro valor sendo o indice e o segundo valor sendo o tamanho da lista encadeada.
+        return new int [][] {indiceMaiores, maioresListas};
+    }
+
 }
