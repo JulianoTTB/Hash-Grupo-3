@@ -20,24 +20,24 @@ public class HashLinear {
         if (digito == 0)
             digito = 3;
         int novo = posicao + digito * tentativa;
-
         while (novo >= tamanho)
             novo -= tamanho;
-
         return novo;
     }
 
-    public void inserir(Registro reg) {
-        String codigo = reg.getCodigo();
-        int chave = 0;
+    private int stringParaInt(String codigo) {
+        int valor = 0;
         for (int i = 0; i < codigo.length(); i++) {
             char c = codigo.charAt(i);
-            chave = chave * 10 + (c - '0');
+            valor = valor * 10 + (c - '0');
         }
+        return valor;
+    }
 
+    public void inserir(Registro reg) {
+        int chave = stringParaInt(reg.getCodigo());
         int posicao = hashPrincipal(chave);
         int tentativa = 0;
-
         while (tabela[posicao] != null) {
             colisoes++;
             tentativa++;
@@ -49,20 +49,13 @@ public class HashLinear {
     public Registro buscar(int chave) {
         if (chave < 0)
             chave = -chave;
-
         int posicao = hashPrincipal(chave);
         int tentativa = 0;
-
         while (tabela[posicao] != null) {
             String codigo = tabela[posicao].getCodigo();
-            int valor = 0;
-            for (int i = 0; i < codigo.length(); i++) {
-                valor = valor * 10 + (codigo.charAt(i) - '0');
-            }
-
+            int valor = stringParaInt(codigo);
             if (valor == chave)
                 return tabela[posicao];
-
             tentativa++;
             posicao = proximaPosicao(posicao, chave, tentativa);
         }
@@ -71,5 +64,47 @@ public class HashLinear {
 
     public int getColisoes() {
         return colisoes;
+    }
+
+    public void testarBuscaEGap(Registro[] vetor) {
+        long inicio = System.nanoTime();
+        for (int i = 0; i < vetor.length; i++) {
+            int chave = stringParaInt(vetor[i].getCodigo());
+            buscar(chave);
+        }
+        long fim = System.nanoTime();
+        long tempoTotal = fim - inicio;
+        System.out.println("Tempo total de busca (ns): " + tempoTotal);
+        encontrarGaps(vetor);
+    }
+
+    private void encontrarGaps(Registro[] vetor) {
+        if (vetor.length < 2) {
+            System.out.println("Não há gaps suficientes para calcular.");
+            return;
+        }
+        int menorGap = 999999999;
+        int maiorGap = -1;
+        int somaGap = 0;
+        int cont = 0;
+        for (int i = 1; i < vetor.length; i++) {
+            int anterior = stringParaInt(vetor[i - 1].getCodigo());
+            int atual = stringParaInt(vetor[i].getCodigo());
+            int gap = atual - anterior;
+            if (gap < 0)
+                gap = -gap;
+            if (gap < menorGap)
+                menorGap = gap;
+            if (gap > maiorGap)
+                maiorGap = gap;
+            somaGap += gap;
+            cont++;
+        }
+        double mediaGap = 0;
+        if (cont > 0)
+            mediaGap = (double) somaGap / cont;
+        System.out.println("Menor gap: " + menorGap);
+        System.out.println("Maior gap: " + maiorGap);
+        System.out.println("Média dos gaps: " + mediaGap);
     }
 }
