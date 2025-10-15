@@ -17,22 +17,22 @@ public class HashMultiplicacao {
         double valor = soma * constante;
 
         int inteiro = (int) valor; // Corta a parte decimal da variável valor.
-        double fracionado = valor - inteiro; // Remove a parte inteira do valor e armazena a parte decimal na variável fracionado.
+        double decimal = valor - inteiro; // Remove a parte inteira do valor e armazena a parte decimal na variável decimal.
 
         // Multiplica a parte fracionada pelo tamanho da tabela hash.
-        int hash = (int) (tamanho * fracionado);
+        int hash = (int) (tamanho * decimal);
         return hash;
     }
 
 
-    public void inserir(Registro registro) {
+    public int inserir(Registro registro) {
         int hash = funcaoHashMultiplicacao(registro.getCodigo());
         // Cria uma lista encadeada na posição tabelaHash[hash] caso ela não exista.
         if (tabelaHash[hash] == null) {
             tabelaHash[hash] = new ListaEncadeada();
         }
         // Caso a lista já exista, insere o registro e o hash na posição.
-        tabelaHash[hash].inserir(registro, hash);
+        return tabelaHash[hash].inserir(registro);
     }
 
 
@@ -45,13 +45,13 @@ public class HashMultiplicacao {
         }
     }
 
-    public Registro buscar(String codigo) {
+    public int buscar(String codigo) {
         int hash = funcaoHashMultiplicacao(codigo);
 
         // Verifica se existe algum valor armazenado na posição.
         if (tabelaHash[hash] != null) {
              return tabelaHash[hash].buscar(codigo);
         }
-        return null;
+        return -1;
     }
 }

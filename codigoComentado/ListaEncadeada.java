@@ -23,39 +23,48 @@ public class ListaEncadeada {
         return tamanho;
     }
 
-    public void inserir(Registro registro){
+    public int inserir(Registro registro){
         // Cria nó com base no que foi passado
         No novo_no = new No(registro);
+        // Variável para contar colisões
+        int colisoes = 0;
         // Se estiver vazia, então o nó será a raiz da lista
         if(vazia()){
             this.raiz = novo_no;
             this.tamanho++;
-            return;
+            return colisoes;
         }
 
         // Ponteiro para a raiz da lista
         No atual = this.raiz;
 
         // Percorre a lista em busca do último nó
-        for(; atual.getProx() != null; atual = atual.getProx());
-
+        for(; atual.getProx() != null; atual = atual.getProx()) {
+            colisoes++;
+        }
         // Atribui à referência do próximo nó do último nó, o novo nó
         atual.setProx(novo_no);
         this.tamanho++; // Incrementa o tamanho da lista
+        return colisoes;
     }
 
-    public Registro buscar(String codigo){
+    public int buscar(String codigo){
         // Se a lista estiver vazia, então o código não está nela
-        if (vazia()) return null;
+        if (vazia()) return -1; // lista vazia retorna -1
 
         // Ponteiro para a raiz da lista
         No atual = this.raiz;
+        int colisoes = 0;
 
         // Percorre a lista até chegar no final
-        for(; atual != null; atual = atual.getProx())
-            if (atual.getDado().getCodigo().equals(codigo)) return atual.getDado(); // Verifica se o nó atual contém o objeto com o código procurado
+        for(; atual != null; atual = atual.getProx()) {
+            if (atual.getDado().getCodigo().equals(codigo)) { // Verifica se o nó atual contém o objeto com o código procurado
+                return colisoes;
+            }
+            colisoes++;
+        }
 
-        return null; // Retorna nulo se chegar no final e o código não tiver sido encontrado
+        return -1;
     }
 
     public void remover(String codigo){
