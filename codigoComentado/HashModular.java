@@ -126,4 +126,15 @@ public class HashModular {
         this.gapMedia = this.gapMedia / contador; // Faz a média dos gap
     }
 
+    public int getGapMenor() {
+        return gapMenor;
+    }
+
+    public int getGapMaior() {
+        return gapMaior;
+    }
+
+    public double getGapMedia() {
+        return gapMedia;
+    }
 }
