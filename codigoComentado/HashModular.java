@@ -1,10 +1,17 @@
 public class HashModular {
     private final Registro[] tabelaHash; // Atributo que armazenará o vetor de registros
     private final int tamanho; // Atributo que armazenará o tamanho do vetor de registros
+    private int gapMenor; // Atributo que armanzena o menor gap encontrado
+    private int gapMaior;// Atributo que armazena o maior gap encontrado
+    private double gapMedia; // Atributo que armazena a média dos gap
 
     public HashModular(int tamanho){
         this.tamanho = tamanho;
         this.tabelaHash = new Registro[this.tamanho]; // Cria um vetor de registros com o tamanho passado na criação do objeto
+        this.gapMenor = 1_000_000_000;
+        this.gapMaior = 0;
+        this.gapMedia = 0;
+
     }
 
 
@@ -93,4 +100,30 @@ public class HashModular {
 
         return colisoes; // Retorna o número de colisões
     }
+
+
+    public void encontrarGap(){
+        int gap = 0; // Contar gaps consecutivos
+        int contador = 0; // Contador de quantos espaços vazios
+        for(int i = 0; i < this.tamanho; i++){
+            if(tabelaHash[i] == null){ // Se o espaço estiver vazio, aumenta o gap e o contador
+                gap++;
+                contador++;
+            }
+            else{
+                //Verifica se o gap é o maior que teve
+                if (gap > this.gapMaior)
+                    this.gapMaior = gap;
+                else if (gap < gapMenor) // Verifica se o gap é o menor que teve
+                    this.gapMenor = gap;
+
+                this.gapMedia += gap; // Soma o gap a média
+
+                gap = 0; // Define o gap como 0, pois foi encontrado um espaço vazio
+            }
+        }
+
+        this.gapMedia = this.gapMedia / contador; // Faz a média dos gap
+    }
+
 }
