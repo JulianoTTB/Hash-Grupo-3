@@ -100,4 +100,42 @@ public class HashMultiplicacao {
         return new int [][] {indiceMaiores, maioresListas};
     }
 
+    public double[] numeroGaps() {
+        int ultimoIndice = -1;
+        int menorGap = tamanho;
+        int maiorGap = 0;
+        int somaGaps = 0;
+        int numGaps = 0;
+
+        // Pèrcorre todas as posições da tabela hash.
+        for(int i = 0; i < tabelaHash.length; i++) {
+            if(tabelaHash[i] != null) { // Verifica se existe alguma lista encadeada na posição i
+                if(ultimoIndice != -1) { // Verifica se o
+                    int gap = i - ultimoIndice - 1; // espaço entre elementos
+
+                    // Atualiza menorGap
+                    if(gap < menorGap) {
+                        menorGap = gap;
+                    }
+
+                    // Atualiza maiorGap
+                    if(gap > maiorGap) {
+                        maiorGap = gap;
+                    }
+
+                    somaGaps += gap;
+                    numGaps++;
+                }
+                ultimoIndice = i;
+            }
+        }
+
+        double mediaGap = 0;
+        if(numGaps > 0) {
+            mediaGap = (double)somaGaps / numGaps;
+        }
+
+        return new double[] {menorGap, maiorGap, mediaGap};
+    }
+
 }
