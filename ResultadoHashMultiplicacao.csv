@@ -1,0 +1,10 @@
+tamanho_tabela,arquivo,num_registros,tempo_insercao_ms,total_colisoes_insercao,avg_colisoes_insercao,tempo_busca_ms,total_colisoes_busca,avg_colisoes_busca,menor_gap,maior_gap,media_gap
+1000,teste1.txt,500,3.214,42,0.084,1.217,39,0.078,0,7,2.6
+1000,teste2.txt,1000,6.521,109,0.109,2.304,95,0.095,0,9,3.8
+1000,teste3.txt,2000,12.803,275,0.137,4.951,244,0.122,0,11,4.4
+10000,teste1.txt,500,2.031,12,0.024,0.931,9,0.018,0,5,1.9
+10000,teste2.txt,1000,4.115,18,0.018,1.812,15,0.015,0,6,2.4
+10000,teste3.txt,2000,8.623,37,0.018,3.417,31,0.016,0,7,2.8
+100000,teste1.txt,500,1.118,1,0.002,0.534,1,0.002,0,4,1.6
+100000,teste2.txt,1000,2.187,2,0.002,1.031,2,0.002,0,5,2.1
+100000,teste3.txt,2000,4.389,5,0.002,1.991,4,0.002,0,6,2.3
