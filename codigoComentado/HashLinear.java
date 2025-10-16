@@ -3,10 +3,19 @@ public class HashLinear {
     private int tamanho;
     private int colisoes;
 
+    // Atributos para armazenar os gaps
+    private int menorGap;
+    private int maiorGap;
+    private double mediaGap;
+
     public HashLinear(int tamanho) {
         this.tamanho = tamanho;
         this.tabela = new Registro[tamanho];
         this.colisoes = 0;
+
+        this.menorGap = Integer.MAX_VALUE;
+        this.maiorGap = -1;
+        this.mediaGap = 0;
     }
 
     private int hashPrincipal(int chave) {
@@ -34,7 +43,6 @@ public class HashLinear {
         return valor;
     }
 
-
     public int inserir(Registro reg) {
         int chave = stringParaInt(reg.getCodigo());
         int posicao = hashPrincipal(chave);
@@ -47,9 +55,7 @@ public class HashLinear {
             tentativa++;
             posicao = proximaPosicao(posicao, chave, tentativa);
 
-            // Caso rode toda a tabela sem achar espaço
             if (tentativa >= tamanho) {
-                System.out.println("Tabela cheia, não foi possível inserir " + reg.getCodigo());
                 return -1;
             }
         }
@@ -66,11 +72,9 @@ public class HashLinear {
         int colisoesBusca = 0;
 
         while (tabela[posicao] != null) {
-            String codigo = tabela[posicao].getCodigo();
-            int valor = stringParaInt(codigo);
-
+            int valor = stringParaInt(tabela[posicao].getCodigo());
             if (valor == chave) {
-                return colisoesBusca; // Retorna número de colisões da busca
+                return colisoesBusca;
             }
 
             tentativa++;
@@ -78,11 +82,11 @@ public class HashLinear {
             posicao = proximaPosicao(posicao, chave, tentativa);
 
             if (tentativa >= tamanho) {
-                return -1; // Procurou em toda a tabela e não achou
+                return -1;
             }
         }
 
-        return -1; // Não encontrado
+        return -1;
     }
 
     public int getColisoes() {
@@ -90,24 +94,23 @@ public class HashLinear {
     }
 
     public void testarBuscaEGap(Registro[] vetor) {
-        long inicio = System.nanoTime();
         for (int i = 0; i < vetor.length; i++) {
             int chave = stringParaInt(vetor[i].getCodigo());
             buscar(chave);
         }
-        long fim = System.nanoTime();
-        long tempoTotal = fim - inicio;
-        System.out.println("Tempo total de busca (ns): " + tempoTotal);
-        encontrarGaps(vetor);
+        calcularGaps(vetor);
     }
 
-    private void encontrarGaps(Registro[] vetor) {
+    private void calcularGaps(Registro[] vetor) {
         if (vetor.length < 2) {
-            System.out.println("Não há gaps suficientes para calcular.");
+            menorGap = 0;
+            maiorGap = 0;
+            mediaGap = 0;
             return;
         }
-        int menorGap = Integer.MAX_VALUE;
-        int maiorGap = -1;
+
+        menorGap = Integer.MAX_VALUE;
+        maiorGap = -1;
         int somaGap = 0;
         int cont = 0;
 
@@ -116,18 +119,25 @@ public class HashLinear {
             int atual = stringParaInt(vetor[i].getCodigo());
             int gap = Math.abs(atual - anterior);
 
-            if (gap < menorGap)
-                menorGap = gap;
-            if (gap > maiorGap)
-                maiorGap = gap;
+            if (gap < menorGap) menorGap = gap;
+            if (gap > maiorGap) maiorGap = gap;
 
             somaGap += gap;
             cont++;
         }
 
-        double mediaGap = (cont > 0) ? (double) somaGap / cont : 0;
-        System.out.println("Menor gap: " + menorGap);
-        System.out.println("Maior gap: " + maiorGap);
-        System.out.println("Média dos gaps: " + mediaGap);
+        mediaGap = (cont > 0) ? (double) somaGap / cont : 0;
+    }
+
+    public int getMenorGap() {
+        return menorGap;
+    }
+
+    public int getMaiorGap() {
+        return maiorGap;
+    }
+
+    public double getMediaGap() {
+        return mediaGap;
     }
 }
