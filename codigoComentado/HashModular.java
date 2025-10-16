@@ -104,17 +104,18 @@ public class HashModular {
 
     public void encontrarGap(){
         int gap = 0; // Contar gaps consecutivos
-        int contador = 0; // Contador de quantos espaços vazios
+        int totalGaps = 0;
         for(int i = 0; i < this.tamanho; i++){
             if(tabelaHash[i] == null){ // Se o espaço estiver vazio, aumenta o gap e o contador
                 gap++;
-                contador++;
             }
             else{
+                if(gap <= 0)continue;
+                totalGaps++;
                 //Verifica se o gap é o maior que teve
                 if (gap > this.gapMaior)
                     this.gapMaior = gap;
-                else if (gap < gapMenor) // Verifica se o gap é o menor que teve
+                if (gap < gapMenor) // Verifica se o gap é o menor que teve
                     this.gapMenor = gap;
 
                 this.gapMedia += gap; // Soma o gap a média
@@ -123,7 +124,16 @@ public class HashModular {
             }
         }
 
-        this.gapMedia = this.gapMedia / contador; // Faz a média dos gap
+        if (gap > 0 && totalGaps > 0) {
+            this.gapMedia += gap;
+            totalGaps++;
+            if (gap > this.gapMaior) this.gapMaior = gap;
+            if (gap < this.gapMenor) this.gapMenor = gap;
+        }
+        if (totalGaps > 0)
+            this.gapMedia = this.gapMedia / totalGaps; // Faz a média dos gap
+        else
+            this.gapMedia = 0;
     }
 
     public int getGapMenor() {
