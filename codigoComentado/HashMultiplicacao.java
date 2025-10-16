@@ -102,40 +102,40 @@ public class HashMultiplicacao {
 
     public double[] numeroGaps() {
         int ultimoIndice = -1;
-        int menorGap = tamanho;
-        int maiorGap = 0;
-        int somaGaps = 0;
-        int numGaps = 0;
+        int menorGap = tamanho; // Menor espaço entre 2 listas
+        int maiorGap = 0; // Maior espaço entre 2 listas
+        int somaGaps = 0; // Soma do número de gaps para calcular média
+        int numGaps = 0; // Contagem de gaps encontrados
 
-        // Pèrcorre todas as posições da tabela hash.
+        // Percorre todas as posições da tabela hash.
         for(int i = 0; i < tabelaHash.length; i++) {
-            if(tabelaHash[i] != null) { // Verifica se existe alguma lista encadeada na posição i
-                if(ultimoIndice != -1) { // Verifica se o
-                    int gap = i - ultimoIndice - 1; // espaço entre elementos
+            if(tabelaHash[i] != null) { // Verifica se existe alguma lista encadeada na posição i.
+                if(ultimoIndice != -1) { // Verifica se não está no primeiro elemento da tabela.
+                    int gap = i - ultimoIndice - 1; // Calcula o espaço entre o elemento atual e a ultima posição onde existia um elemento.
 
-                    // Atualiza menorGap
+                    // Atualiza o menor gap se o gap atual for menor.
                     if(gap < menorGap) {
                         menorGap = gap;
                     }
 
-                    // Atualiza maiorGap
+                    // Atualiza o maior gap se o gap atual for maior.
                     if(gap > maiorGap) {
                         maiorGap = gap;
                     }
 
-                    somaGaps += gap;
-                    numGaps++;
+                    somaGaps += gap; // Soma a variável somaGaps com o gap atual.
+                    numGaps++; // Aumenta a contagem do número de gaps.
                 }
-                ultimoIndice = i;
+                ultimoIndice = i; // Atualiza o indice do último elemento encontrado.
             }
         }
 
-        double mediaGap = 0;
+        double mediaGap = 0; // Média dos gaps.
         if(numGaps > 0) {
-            mediaGap = (double)somaGaps / numGaps;
+            mediaGap = (double)somaGaps / numGaps; // Calcula a média dos gaps.
         }
 
-        return new double[] {menorGap, maiorGap, mediaGap};
+        return new double[] {menorGap, maiorGap, mediaGap}; // retorna um vetor com menor, maior e a média de gaps.
     }
 
 }
