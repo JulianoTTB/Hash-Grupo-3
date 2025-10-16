@@ -18,13 +18,13 @@ public class HashLinear {
         this.mediaGap = 0;
     }
 
-    private int hashPrincipal(int chave) {
+    private int hashPrincipal(int chave) { // calcula a posição inicial na tabela
         if (chave < 0)
             chave = -chave;
         return chave % tamanho;
     }
 
-    private int proximaPosicao(int posicao, int chave, int tentativa) {
+    private int proximaPosicao(int posicao, int chave, int tentativa) { // calcula a proxima posição
         int digito = (chave / 10) % 9;
         if (digito == 0)
             digito = 3;
@@ -34,7 +34,7 @@ public class HashLinear {
         return novo;
     }
 
-    private int stringParaInt(String codigo) {
+    private int stringParaInt(String codigo) { // substituto do parseint
         int valor = 0;
         for (int i = 0; i < codigo.length(); i++) {
             char c = codigo.charAt(i);
@@ -44,8 +44,8 @@ public class HashLinear {
     }
 
     public int inserir(Registro reg) {
-        int chave = stringParaInt(reg.getCodigo());
-        int posicao = hashPrincipal(chave);
+        int chave = stringParaInt(reg.getCodigo()); //
+        int posicao = hashPrincipal(chave); // calcula a posição inicial
         int tentativa = 0;
         int colisoesInsercao = 0;
 
@@ -64,7 +64,7 @@ public class HashLinear {
         return colisoesInsercao;
     }
 
-    public int buscar(int chave) {
+    public int buscar(int chave) { // procura a chave dentro da tabela
         if (chave < 0)
             chave = -chave;
         int posicao = hashPrincipal(chave);
