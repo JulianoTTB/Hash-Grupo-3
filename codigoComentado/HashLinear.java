@@ -34,32 +34,55 @@ public class HashLinear {
         return valor;
     }
 
-    public void inserir(Registro reg) {
+
+    public int inserir(Registro reg) {
         int chave = stringParaInt(reg.getCodigo());
         int posicao = hashPrincipal(chave);
         int tentativa = 0;
+        int colisoesInsercao = 0;
+
         while (tabela[posicao] != null) {
             colisoes++;
+            colisoesInsercao++;
             tentativa++;
             posicao = proximaPosicao(posicao, chave, tentativa);
+
+            // Caso rode toda a tabela sem achar espaço
+            if (tentativa >= tamanho) {
+                System.out.println("Tabela cheia, não foi possível inserir " + reg.getCodigo());
+                return -1;
+            }
         }
+
         tabela[posicao] = reg;
+        return colisoesInsercao;
     }
 
-    public Registro buscar(int chave) {
+    public int buscar(int chave) {
         if (chave < 0)
             chave = -chave;
         int posicao = hashPrincipal(chave);
         int tentativa = 0;
+        int colisoesBusca = 0;
+
         while (tabela[posicao] != null) {
             String codigo = tabela[posicao].getCodigo();
             int valor = stringParaInt(codigo);
-            if (valor == chave)
-                return tabela[posicao];
+
+            if (valor == chave) {
+                return colisoesBusca; // Retorna número de colisões da busca
+            }
+
             tentativa++;
+            colisoesBusca++;
             posicao = proximaPosicao(posicao, chave, tentativa);
+
+            if (tentativa >= tamanho) {
+                return -1; // Procurou em toda a tabela e não achou
+            }
         }
-        return null;
+
+        return -1; // Não encontrado
     }
 
     public int getColisoes() {
@@ -83,26 +106,26 @@ public class HashLinear {
             System.out.println("Não há gaps suficientes para calcular.");
             return;
         }
-        int menorGap = 999999999;
+        int menorGap = Integer.MAX_VALUE;
         int maiorGap = -1;
         int somaGap = 0;
         int cont = 0;
+
         for (int i = 1; i < vetor.length; i++) {
             int anterior = stringParaInt(vetor[i - 1].getCodigo());
             int atual = stringParaInt(vetor[i].getCodigo());
-            int gap = atual - anterior;
-            if (gap < 0)
-                gap = -gap;
+            int gap = Math.abs(atual - anterior);
+
             if (gap < menorGap)
                 menorGap = gap;
             if (gap > maiorGap)
                 maiorGap = gap;
+
             somaGap += gap;
             cont++;
         }
-        double mediaGap = 0;
-        if (cont > 0)
-            mediaGap = (double) somaGap / cont;
+
+        double mediaGap = (cont > 0) ? (double) somaGap / cont : 0;
         System.out.println("Menor gap: " + menorGap);
         System.out.println("Maior gap: " + maiorGap);
         System.out.println("Média dos gaps: " + mediaGap);
